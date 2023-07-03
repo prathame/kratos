@@ -138,12 +138,12 @@ func (s *Strategy) Verify(w http.ResponseWriter, r *http.Request, f *verificatio
 	}
 
 	switch f.State {
-	case verification.StateChooseMethod:
+	case flow.StateChooseMethod:
 		fallthrough
-	case verification.StateEmailSent:
+	case flow.StateEmailSent:
 		// Do nothing (continue with execution after this switch statement)
 		return s.verificationHandleFormSubmission(w, r, f)
-	case verification.StatePassedChallenge:
+	case flow.StatePassedChallenge:
 		return s.retryVerificationFlowWithMessage(w, r, f.Type, text.NewErrorValidationVerificationRetrySuccess())
 	default:
 		return s.retryVerificationFlowWithMessage(w, r, f.Type, text.NewErrorValidationVerificationStateFailure())
@@ -151,7 +151,7 @@ func (s *Strategy) Verify(w http.ResponseWriter, r *http.Request, f *verificatio
 }
 
 func (s *Strategy) verificationHandleFormSubmission(w http.ResponseWriter, r *http.Request, f *verification.Flow) error {
-	var body = new(verificationSubmitPayload)
+	body := new(verificationSubmitPayload)
 	body, err := s.decodeVerification(r)
 	if err != nil {
 		return s.handleVerificationError(w, r, f, body, err)
@@ -178,8 +178,8 @@ func (s *Strategy) verificationHandleFormSubmission(w http.ResponseWriter, r *ht
 		node.NewInputField("email", body.Email, node.LinkGroup, node.InputAttributeTypeEmail, node.WithRequiredInputAttribute).WithMetaLabel(text.NewInfoNodeInputEmail()),
 	)
 
-	f.Active = sqlxx.NullString(s.VerificationNodeGroup())
-	f.State = verification.StateEmailSent
+	f.Active = sqlxx.NullString(s.NodeGroup())
+	f.State = flow.StateEmailSent
 	f.UI.Messages.Set(text.NewVerificationEmailSent())
 	if err := s.d.VerificationFlowPersister().UpdateVerificationFlow(r.Context(), f); err != nil {
 		return s.handleVerificationError(w, r, f, body, err)
@@ -232,7 +232,7 @@ func (s *Strategy) verificationUseToken(w http.ResponseWriter, r *http.Request, 
 		Action: returnTo.String(),
 	}
 	f.UI.Messages.Clear()
-	f.State = verification.StatePassedChallenge
+	f.State = flow.StatePassedChallenge
 	// See https://github.com/ory/kratos/issues/1547
 	f.SetCSRFToken(flow.GetCSRFToken(s.d, w, r, f.Type))
 	f.UI.Messages.Set(text.NewInfoSelfServiceVerificationSuccessful())
@@ -304,7 +304,6 @@ func (s *Strategy) retryVerificationFlowWithError(w http.ResponseWriter, r *http
 }
 
 func (s *Strategy) SendVerificationEmail(ctx context.Context, f *verification.Flow, i *identity.Identity, a *identity.VerifiableAddress) error {
-
 	token := NewSelfServiceVerificationToken(a, f, s.d.Config().SelfServiceLinkMethodLifespan(ctx))
 	if err := s.d.VerificationTokenPersister().CreateVerificationToken(ctx, token); err != nil {
 		return err

@@ -278,6 +278,7 @@ type (
 		CourierTemplatesRecoveryCodeValid(ctx context.Context) *CourierEmailTemplate
 		CourierTemplatesVerificationCodeInvalid(ctx context.Context) *CourierEmailTemplate
 		CourierTemplatesVerificationCodeValid(ctx context.Context) *CourierEmailTemplate
+		CourierTemplatesLoginRegistrationCodeValid(ctx context.Context) *CourierEmailTemplate
 		CourierMessageRetries(ctx context.Context) int
 	}
 )
@@ -733,6 +734,7 @@ func (p *Config) SelfServiceStrategy(ctx context.Context, strategy string) *Self
 	// we need to forcibly set these values here:
 	if !pp.Exists(enabledKey) {
 		switch strategy {
+		case "otp":
 		case "password":
 			fallthrough
 		case "profile":

@@ -3,6 +3,58 @@
     "type": "input",
     "group": "code",
     "attributes": {
+      "name": "email",
+      "type": "email",
+      "required": true,
+      "disabled": false,
+      "node_type": "input"
+    },
+    "messages": [],
+    "meta": {
+      "label": {
+        "id": 1070007,
+        "text": "Email",
+        "type": "info"
+      }
+    }
+  },
+  {
+    "type": "input",
+    "group": "code",
+    "attributes": {
+      "name": "method",
+      "type": "submit",
+      "value": "code",
+      "disabled": false,
+      "node_type": "input"
+    },
+    "messages": [],
+    "meta": {
+      "label": {
+        "id": 1070005,
+        "text": "Submit",
+        "type": "info"
+      }
+    }
+  },
+  {
+    "type": "input",
+    "group": "default",
+    "attributes": {
+      "name": "csrf_token",
+      "type": "hidden",
+      "value": "ysjIrDUcUoRLGdMGXi6pnZlUgkb9Ug9G6s8v12xzVhkUUbXWtSVZlrbxPAr8V0YkdhVK8kVP4UHsuZD8azDx3w==",
+      "required": true,
+      "disabled": false,
+      "node_type": "input"
+    },
+    "messages": [],
+    "meta": {}
+  },
+  {
+    "type": "input",
+    "group": "code",
+    "attributes": {
       "name": "code",
       "type": "text",
       "required": true,
@@ -49,19 +101,6 @@
         "type": "info"
       }
     }
-  },
-  {
-    "type": "input",
-    "group": "default",
-    "attributes": {
-      "name": "csrf_token",
-      "type": "hidden",
-      "required": true,
-      "disabled": false,
-      "node_type": "input"
-    },
-    "messages": [],
-    "meta": {}
   },
   {
     "type": "input",

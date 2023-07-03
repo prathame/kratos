@@ -39,6 +39,7 @@ type Flow interface {
 	GetRequestURL() string
 	AppendTo(*url.URL) *url.URL
 	GetUI() *container.Container
+	GetState() State
 }
 
 type FlowWithRedirect interface {

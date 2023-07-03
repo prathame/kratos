@@ -649,7 +649,6 @@ func (m *RegistryDefault) Init(ctx context.Context, ctxer contextx.Contextualize
 		m.persister = p.WithNetworkID(net.ID)
 		return nil
 	}, bc)
-
 	if err != nil {
 		return err
 	}

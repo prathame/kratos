@@ -127,7 +127,7 @@ func NewFlow(conf *config.Config, exp time.Duration, csrf string, r *http.Reques
 			Method: "POST",
 			Action: flow.AppendFlowTo(urlx.AppendPaths(conf.SelfPublicURL(r.Context()), RouteSubmitFlow), id).String(),
 		},
-		State:     StateChooseMethod,
+		State:     flow.StateChooseMethod,
 		CSRFToken: csrf,
 		Type:      ft,
 	}
@@ -221,4 +221,8 @@ func (f *Flow) AfterSave(*pop.Connection) error {
 
 func (f *Flow) GetUI() *container.Container {
 	return f.UI
+}
+
+func (f *Flow) GetState() State {
+	return f.State
 }

@@ -127,7 +127,7 @@ func NewFlow(conf *config.Config, exp time.Duration, csrf string, r *http.Reques
 			Action: flow.AppendFlowTo(urlx.AppendPaths(conf.SelfPublicURL(r.Context()), RouteSubmitFlow), id).String(),
 		},
 		CSRFToken: csrf,
-		State:     StateChooseMethod,
+		State:     flow.StateChooseMethod,
 		Type:      ft,
 	}
 
@@ -252,4 +252,8 @@ func (f *Flow) ContinueURL(ctx context.Context, config *config.Config) *url.URL 
 		return flowContinueURL
 	}
 	return returnTo
+}
+
+func (f *Flow) GetState() State {
+	return f.State
 }

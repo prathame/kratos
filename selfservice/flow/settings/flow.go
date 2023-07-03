@@ -153,7 +153,7 @@ func NewFlow(conf *config.Config, exp time.Duration, r *http.Request, i *identit
 		IdentityID: i.ID,
 		Identity:   i,
 		Type:       ft,
-		State:      StateShowForm,
+		State:      flow.StateShowForm,
 		UI: &container.Container{
 			Method: "POST",
 			Action: flow.AppendFlowTo(urlx.AppendPaths(conf.SelfPublicURL(r.Context()), RouteSubmitFlow), id).String(),
@@ -241,4 +241,8 @@ func (f *Flow) AddContinueWith(c flow.ContinueWith) {
 
 func (f *Flow) ContinueWith() []flow.ContinueWith {
 	return f.ContinueWithItems
+}
+
+func (f *Flow) GetState() State {
+	return f.State
 }
