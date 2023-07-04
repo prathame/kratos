@@ -13,39 +13,39 @@ import (
 )
 
 type (
-	LoginRegistrationCodeValid struct {
+	LoginCodeValid struct {
 		deps  template.Dependencies
-		model *RecoveryCodeValidModel
+		model *LoginCodeValidModel
 	}
-	LoginRegistrationCodeValidModel struct {
-		To           string
-		RecoveryCode string
-		Identity     map[string]interface{}
+	LoginCodeValidModel struct {
+		To        string
+		LoginCode string
+		Identity  map[string]interface{}
 	}
 )
 
-func NewLoginRegistrationCodeValid(d template.Dependencies, m *RecoveryCodeValidModel) *LoginRegistrationCodeValid {
-	return &LoginRegistrationCodeValid{deps: d, model: m}
+func NewLoginCodeValid(d template.Dependencies, m *LoginCodeValidModel) *LoginCodeValid {
+	return &LoginCodeValid{deps: d, model: m}
 }
 
-func (t *LoginRegistrationCodeValid) EmailRecipient() (string, error) {
+func (t *LoginCodeValid) EmailRecipient() (string, error) {
 	return t.model.To, nil
 }
 
-func (t *LoginRegistrationCodeValid) EmailSubject(ctx context.Context) (string, error) {
-	subject, err := template.LoadText(ctx, t.deps, os.DirFS(t.deps.CourierConfig().CourierTemplatesRoot(ctx)), "login_registration_code/valid/email.subject.gotmpl", "login_registration_code/valid/email.subject*", t.model, t.deps.CourierConfig().CourierTemplatesLoginRegistrationCodeValid(ctx).Subject)
+func (t *LoginCodeValid) EmailSubject(ctx context.Context) (string, error) {
+	subject, err := template.LoadText(ctx, t.deps, os.DirFS(t.deps.CourierConfig().CourierTemplatesRoot(ctx)), "login_code/valid/email.subject.gotmpl", "login_code/valid/email.subject*", t.model, t.deps.CourierConfig().CourierTemplatesLoginCodeValid(ctx).Subject)
 
 	return strings.TrimSpace(subject), err
 }
 
-func (t *LoginRegistrationCodeValid) EmailBody(ctx context.Context) (string, error) {
-	return template.LoadHTML(ctx, t.deps, os.DirFS(t.deps.CourierConfig().CourierTemplatesRoot(ctx)), "login_registration_code/valid/email.body.gotmpl", "login_registration_code/valid/email.body*", t.model, t.deps.CourierConfig().CourierTemplatesLoginRegistrationCodeValid(ctx).Body.HTML)
+func (t *LoginCodeValid) EmailBody(ctx context.Context) (string, error) {
+	return template.LoadHTML(ctx, t.deps, os.DirFS(t.deps.CourierConfig().CourierTemplatesRoot(ctx)), "login_code/valid/email.body.gotmpl", "login_code/valid/email.body*", t.model, t.deps.CourierConfig().CourierTemplatesLoginCodeValid(ctx).Body.HTML)
 }
 
-func (t *LoginRegistrationCodeValid) EmailBodyPlaintext(ctx context.Context) (string, error) {
-	return template.LoadText(ctx, t.deps, os.DirFS(t.deps.CourierConfig().CourierTemplatesRoot(ctx)), "login_registration_code/valid/email.body.plaintext.gotmpl", "login_registration_code/valid/email.body.plaintext*", t.model, t.deps.CourierConfig().CourierTemplatesLoginRegistrationCodeValid(ctx).Body.PlainText)
+func (t *LoginCodeValid) EmailBodyPlaintext(ctx context.Context) (string, error) {
+	return template.LoadText(ctx, t.deps, os.DirFS(t.deps.CourierConfig().CourierTemplatesRoot(ctx)), "login_code/valid/email.body.plaintext.gotmpl", "login_code/valid/email.body.plaintext*", t.model, t.deps.CourierConfig().CourierTemplatesLoginCodeValid(ctx).Body.PlainText)
 }
 
-func (t *LoginRegistrationCodeValid) MarshalJSON() ([]byte, error) {
+func (t *LoginCodeValid) MarshalJSON() ([]byte, error) {
 	return json.Marshal(t.model)
 }

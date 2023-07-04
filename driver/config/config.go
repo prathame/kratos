@@ -68,6 +68,8 @@ const (
 	ViperKeyCourierTemplatesVerificationCodeValidEmail       = "courier.templates.verification_code.valid.email"
 	ViperKeyCourierDeliveryStrategy                          = "courier.delivery_strategy"
 	ViperKeyCourierHTTPRequestConfig                         = "courier.http.request_config"
+	ViperKeyCourierTemplatesLoginCodeEmail                   = "courier.templates.login_code.email"
+	ViperKeyCourierTemplatesRegistrationEmail                = "courier.templates.registration_code.email"
 	ViperKeyCourierSMTPFrom                                  = "courier.smtp.from_address"
 	ViperKeyCourierSMTPFromName                              = "courier.smtp.from_name"
 	ViperKeyCourierSMTPHeaders                               = "courier.smtp.headers"
@@ -278,7 +280,8 @@ type (
 		CourierTemplatesRecoveryCodeValid(ctx context.Context) *CourierEmailTemplate
 		CourierTemplatesVerificationCodeInvalid(ctx context.Context) *CourierEmailTemplate
 		CourierTemplatesVerificationCodeValid(ctx context.Context) *CourierEmailTemplate
-		CourierTemplatesLoginRegistrationCodeValid(ctx context.Context) *CourierEmailTemplate
+		CourierTemplatesLoginCodeValid(ctx context.Context) *CourierEmailTemplate
+		CourierTemplatesRegistrationCodeValid(ctx context.Context) *CourierEmailTemplate
 		CourierMessageRetries(ctx context.Context) int
 	}
 )
@@ -1090,6 +1093,14 @@ func (p *Config) CourierTemplatesVerificationCodeInvalid(ctx context.Context) *C
 
 func (p *Config) CourierTemplatesVerificationCodeValid(ctx context.Context) *CourierEmailTemplate {
 	return p.CourierTemplatesHelper(ctx, ViperKeyCourierTemplatesVerificationCodeValidEmail)
+}
+
+func (p *Config) CourierTemplatesLoginCodeValid(ctx context.Context) *CourierEmailTemplate {
+	return p.CourierTemplatesHelper(ctx, ViperKeyCourierTemplatesLoginCodeEmail)
+}
+
+func (p *Config) CourierTemplatesRegistrationCodeValid(ctx context.Context) *CourierEmailTemplate {
+	return p.CourierTemplatesHelper(ctx, ViperKeyCourierTemplatesRegistrationCodeEmail)
 }
 
 func (p *Config) CourierMessageRetries(ctx context.Context) int {

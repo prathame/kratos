@@ -15,16 +15,15 @@ import (
 type (
 	RegistrationCodeValid struct {
 		deps  template.Dependencies
-		model *RecoveryCodeValidModel
+		model *RegistrationCodeValidModel
 	}
 	RegistrationCodeValidModel struct {
-		To           string
-		RecoveryCode string
-		Identity     map[string]interface{}
+		To               string
+		RegistrationCode string
 	}
 )
 
-func NewRegistrationCodeValid(d template.Dependencies, m *RecoveryCodeValidModel) *RegistrationCodeValid {
+func NewRegistrationCodeValid(d template.Dependencies, m *RegistrationCodeValidModel) *RegistrationCodeValid {
 	return &RegistrationCodeValid{deps: d, model: m}
 }
 
