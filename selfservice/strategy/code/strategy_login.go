@@ -1,3 +1,6 @@
+// Copyright © 2023 Ory Corp
+// SPDX-License-Identifier: Apache-2.0
+
 package code
 
 import (
@@ -8,6 +11,7 @@ import (
 	"net/http"
 
 	"github.com/gofrs/uuid"
+
 	"github.com/ory/herodot"
 	"github.com/ory/kratos/identity"
 	"github.com/ory/kratos/selfservice/flow"

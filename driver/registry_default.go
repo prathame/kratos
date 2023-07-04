@@ -27,7 +27,6 @@ import (
 	"github.com/ory/nosurf"
 
 	"github.com/ory/kratos/hydra"
-	"github.com/ory/kratos/otp"
 	"github.com/ory/kratos/selfservice/strategy/code"
 	"github.com/ory/kratos/selfservice/strategy/webauthn"
 
