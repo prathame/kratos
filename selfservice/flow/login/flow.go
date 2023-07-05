@@ -264,3 +264,7 @@ func (f *Flow) SecureRedirectToOpts(ctx context.Context, cfg config.Provider) (o
 func (f *Flow) GetState() State {
 	return f.State
 }
+
+func (f *Flow) GetFlowName() flow.FlowName {
+	return flow.LoginFlow
+}

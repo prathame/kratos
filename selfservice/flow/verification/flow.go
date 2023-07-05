@@ -257,3 +257,7 @@ func (f *Flow) ContinueURL(ctx context.Context, config *config.Config) *url.URL 
 func (f *Flow) GetState() State {
 	return f.State
 }
+
+func (f *Flow) GetFlowName() flow.FlowName {
+	return flow.VerificationFlow
+}

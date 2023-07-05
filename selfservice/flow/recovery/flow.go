@@ -226,3 +226,7 @@ func (f *Flow) GetUI() *container.Container {
 func (f *Flow) GetState() State {
 	return f.State
 }
+
+func (f *Flow) GetFlowName() flow.FlowName {
+	return flow.RecoveryFlow
+}

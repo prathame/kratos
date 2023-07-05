@@ -246,3 +246,7 @@ func (f *Flow) ContinueWith() []flow.ContinueWith {
 func (f *Flow) GetState() State {
 	return f.State
 }
+
+func (f *Flow) GetFlowName() flow.FlowName {
+	return flow.SettingsFlow
+}

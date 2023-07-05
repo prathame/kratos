@@ -89,6 +89,10 @@ func (t *testFlow) GetState() State {
 	return t.State
 }
 
+func (t *testFlow) GetFlowName() FlowName {
+	return FlowName("test")
+}
+
 func newTestFlow(r *http.Request, flowType Type) Flow {
 	id := x.NewUUID()
 	requestURL := x.RequestURL(r).String()

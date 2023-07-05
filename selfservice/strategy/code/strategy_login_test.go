@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"net/http"
 	"net/url"
 	"testing"
 
@@ -65,9 +66,9 @@ func TestLoginCodeStrategy(t *testing.T) {
 		loginEmail := gjson.Get(identity.Traits.String(), "traits.email").String()
 
 		// 2. Submit Identifier (email)
-		resp, err = client.PostForm(public.URL+login.RouteSubmitFlow, url.Values{
+		resp, err = client.PostForm(public.URL+login.RouteSubmitFlow+"?flow="+flowID, url.Values{
 			"csrf_token": {csrfToken},
-			"method":     {"otp"},
+			"method":     {"code"},
 			"identifier": {loginEmail},
 		})
 		require.NoError(t, err)
@@ -86,10 +87,20 @@ func TestLoginCodeStrategy(t *testing.T) {
 		assert.NotEmpty(t, loginCode)
 
 		// 3. Submit OTP
-		resp, err = client.PostForm(public.URL+login.RouteSubmitFlow, url.Values{
+		resp, err = client.PostForm(public.URL+login.RouteSubmitFlow+"?flow="+flowID, url.Values{
 			"csrf_token": {csrfToken},
-			"method":     {"otp"},
+			"method":     {"code"},
 			"otp":        {loginCode},
 		})
+		require.NoError(t, err)
+		body, err = io.ReadAll(resp.Body)
+		require.NoError(t, err)
+
+		var cookie *http.Cookie
+		for _, c := range resp.Cookies() {
+			cookie = c
+		}
+		require.Equal(t, cookie.Name, "ory_kratos_session")
+		require.NotEmpty(t, cookie.Value)
 	})
 }

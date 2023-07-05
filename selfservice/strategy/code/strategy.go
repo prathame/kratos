@@ -97,11 +97,7 @@ type (
 
 		sessiontokenexchange.PersistenceProvider
 	}
-	AnyFlow interface {
-		GetState() flow.State
-		GetUI() *container.Container
-		GetType() flow.Type
-	}
+
 	Strategy struct {
 		deps strategyDependencies
 		dx   *decoderx.HTTP
@@ -120,22 +116,24 @@ func (s *Strategy) NodeGroup() node.UiNodeGroup {
 	return node.CodeGroup
 }
 
-type FlowType string
-
-const (
-	VerificationFlowType FlowType = "verification"
-	RecoveryFlowType              = "recovery"
-	LoginFlowType                 = "login"
-	RegistrationFlowType          = "registration"
-)
-
 func (s *Strategy) PopulateMethod(r *http.Request, f flow.Flow) error {
-	var flowType FlowType
-	switch f.(type) {
-	case *verification.Flow:
-		flowType = VerificationFlowType
-	}
-	if f.GetState() == flow.StateEmailSent {
+	switch f.GetState() {
+	case flow.StateChooseMethod:
+
+		if f.GetFlowName() == flow.VerificationFlow || f.GetFlowName() == flow.RecoveryFlow || f.GetFlowName() == flow.RegistrationFlow {
+			f.GetUI().GetNodes().Upsert(
+				node.NewInputField("email", nil, node.CodeGroup, node.InputAttributeTypeEmail, node.WithRequiredInputAttribute).
+					WithMetaLabel(text.NewInfoNodeInputEmail()),
+			)
+		} else if f.GetFlowName() == flow.LoginFlow {
+			f.GetUI().GetNodes().Upsert(
+				node.NewInputField("identifier", nil, node.CodeGroup, node.InputAttributeTypeText, node.WithRequiredInputAttribute).
+					WithMetaLabel(text.NewInfoNodeInputEmail()),
+			)
+		}
+
+		break
+	case flow.StateEmailSent:
 		f.GetUI().Nodes.Upsert(
 			node.
 				NewInputField("code", nil, node.CodeGroup, node.InputAttributeTypeText, node.WithRequiredInputAttribute).
@@ -146,21 +144,10 @@ func (s *Strategy) PopulateMethod(r *http.Request, f flow.Flow) error {
 			node.NewInputField("method", s.NodeGroup(), node.CodeGroup, node.InputAttributeTypeHidden),
 		)
 
-		if flowType == VerificationFlowType {
+		if f.GetFlowName() == flow.VerificationFlow {
 			f.GetUI().Messages.Set(text.NewVerificationEmailWithCodeSent())
 		}
-	} else {
-		if flowType == VerificationFlowType || flowType == RecoveryFlowType || flowType == RegistrationFlowType {
-			f.GetUI().GetNodes().Upsert(
-				node.NewInputField("email", nil, node.CodeGroup, node.InputAttributeTypeEmail, node.WithRequiredInputAttribute).
-					WithMetaLabel(text.NewInfoNodeInputEmail()),
-			)
-		} else if flowType == LoginFlowType {
-			f.GetUI().GetNodes().Upsert(
-				node.NewInputField("identifier", nil, node.CodeGroup, node.InputAttributeTypeText, node.WithRequiredInputAttribute).
-					WithMetaLabel(text.NewInfoNodeInputEmail()),
-			)
-		}
+		break
 	}
 
 	f.GetUI().Nodes.Append(

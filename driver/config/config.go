@@ -68,8 +68,8 @@ const (
 	ViperKeyCourierTemplatesVerificationCodeValidEmail       = "courier.templates.verification_code.valid.email"
 	ViperKeyCourierDeliveryStrategy                          = "courier.delivery_strategy"
 	ViperKeyCourierHTTPRequestConfig                         = "courier.http.request_config"
-	ViperKeyCourierTemplatesLoginCodeEmail                   = "courier.templates.login_code.email"
-	ViperKeyCourierTemplatesRegistrationEmail                = "courier.templates.registration_code.email"
+	ViperKeyCourierTemplatesLoginCodeValidEmail              = "courier.templates.login_code.valid.email"
+	ViperKeyCourierTemplatesRegistrationCodeValidEmail       = "courier.templates.registration_code.valid.email"
 	ViperKeyCourierSMTPFrom                                  = "courier.smtp.from_address"
 	ViperKeyCourierSMTPFromName                              = "courier.smtp.from_name"
 	ViperKeyCourierSMTPHeaders                               = "courier.smtp.headers"
@@ -1096,11 +1096,11 @@ func (p *Config) CourierTemplatesVerificationCodeValid(ctx context.Context) *Cou
 }
 
 func (p *Config) CourierTemplatesLoginCodeValid(ctx context.Context) *CourierEmailTemplate {
-	return p.CourierTemplatesHelper(ctx, ViperKeyCourierTemplatesLoginCodeEmail)
+	return p.CourierTemplatesHelper(ctx, ViperKeyCourierTemplatesLoginCodeValidEmail)
 }
 
 func (p *Config) CourierTemplatesRegistrationCodeValid(ctx context.Context) *CourierEmailTemplate {
-	return p.CourierTemplatesHelper(ctx, ViperKeyCourierTemplatesRegistrationCodeEmail)
+	return p.CourierTemplatesHelper(ctx, ViperKeyCourierTemplatesRegistrationCodeValidEmail)
 }
 
 func (p *Config) CourierMessageRetries(ctx context.Context) int {
