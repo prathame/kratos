@@ -30,6 +30,9 @@ type (
 			TOTP struct {
 				AccountName bool `json:"account_name"`
 			} `json:"totp"`
+			Code struct {
+				Identifier bool `json:"identifier"`
+			} `json:"code"`
 		} `json:"credentials"`
 		Verification struct {
 			Via string `json:"via"`

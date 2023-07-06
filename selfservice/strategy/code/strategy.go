@@ -109,7 +109,7 @@ func NewStrategy(deps strategyDependencies) *Strategy {
 }
 
 func (s *Strategy) ID() identity.CredentialsType {
-	return identity.CredentialsTypeOTPAuth
+	return identity.CredentialsTypeCodeAuth
 }
 
 func (s *Strategy) NodeGroup() node.UiNodeGroup {

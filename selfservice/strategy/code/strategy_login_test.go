@@ -24,7 +24,7 @@ import (
 func TestLoginCodeStrategy(t *testing.T) {
 	ctx := context.Background()
 	conf, reg := internal.NewFastRegistryWithMocks(t)
-	testhelpers.StrategyEnable(t, conf, string(identity.CredentialsTypeOTPAuth), true)
+	testhelpers.StrategyEnable(t, conf, string(identity.CredentialsTypeCodeAuth), true)
 
 	initViper(t, ctx, conf)
 
@@ -90,7 +90,7 @@ func TestLoginCodeStrategy(t *testing.T) {
 		resp, err = client.PostForm(public.URL+login.RouteSubmitFlow+"?flow="+flowID, url.Values{
 			"csrf_token": {csrfToken},
 			"method":     {"code"},
-			"otp":        {loginCode},
+			"code":       {loginCode},
 		})
 		require.NoError(t, err)
 		body, err = io.ReadAll(resp.Body)

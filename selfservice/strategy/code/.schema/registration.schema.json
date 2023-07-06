@@ -12,8 +12,9 @@
     "code": {
       "type": "string"
     },
-    "identifier": {
-      "type": "string"
+    "email": {
+      "type": "string",
+      "format": "email"
     },
     "flow": {
       "type": "string",

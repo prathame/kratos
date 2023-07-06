@@ -8,7 +8,7 @@ import "github.com/ory/x/sqlxx"
 // CredentialsOTP represents an OTP code
 //
 // swagger:model identityCredentialsOTP
-type CredentialsOTP struct {
+type CredentialsCode struct {
 	// CodeHMAC represents the HMACed value of the login/registration code
 	CodeHMAC string `json:"code_hmac"`
 
