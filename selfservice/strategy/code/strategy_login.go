@@ -38,7 +38,7 @@ func (s *Strategy) RegisterLoginRoutes(*x.RouterPublic) {}
 
 func (s *Strategy) CompletedAuthenticationMethod(ctx context.Context) session.AuthenticationMethod {
 	return session.AuthenticationMethod{
-		Method: identity.CredentialsTypeOTPAuth,
+		Method: identity.CredentialsTypeCodeAuth,
 		AAL:    identity.AuthenticatorAssuranceLevel1,
 	}
 }
@@ -122,7 +122,7 @@ func (s *Strategy) Login(w http.ResponseWriter, r *http.Request, f *login.Flow, 
 		return nil, herodot.ErrInternalServerError.WithReason("The password credentials could not be decoded properly").WithDebug(err.Error()).WithWrap(err)
 	}
 
-	f.Active = identity.CredentialsTypeOTPAuth
+	f.Active = identity.CredentialsTypeCodeAuth
 	if err = s.deps.LoginFlowPersister().UpdateLoginFlow(r.Context(), f); err != nil {
 		return nil, s.HandleLoginError(w, r, f, &p, err)
 	}
