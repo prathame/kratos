@@ -11,6 +11,7 @@ import (
 	"github.com/ory/kratos/selfservice/flow"
 	"github.com/ory/kratos/selfservice/flow/registration"
 	"github.com/ory/kratos/text"
+	"github.com/ory/kratos/ui/container"
 	"github.com/ory/kratos/ui/node"
 	"github.com/ory/kratos/x"
 )
@@ -51,16 +52,14 @@ func (s *Strategy) RegisterRegistrationRoutes(*x.RouterPublic) {}
 
 func (s *Strategy) HandleRegistrationError(w http.ResponseWriter, r *http.Request, flow *registration.Flow, body *UpdateRegistrationFlowWithCodeMethod, err error) error {
 	if flow != nil {
-		email := ""
 		if body != nil {
-			email = body.Traits
+			for _, n := range container.NewFromJSON("", node.CodeGroup, body.Traits, "traits").Nodes {
+				// we only set the value and not the whole field because we want to keep types from the initial form generation
+				flow.UI.Nodes.SetValueAttribute(n.ID(), n.Attributes.GetValue())
+			}
 		}
 
 		flow.UI.SetCSRF(s.deps.GenerateCSRFToken(r))
-		flow.UI.GetNodes().Upsert(
-			node.NewInputField("identifier", email, node.CodeGroup, node.InputAttributeTypeEmail, node.WithRequiredInputAttribute).
-				WithMetaLabel(text.NewInfoNodeInputEmail()),
-		)
 	}
 
 	return err
